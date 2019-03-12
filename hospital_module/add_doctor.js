@@ -10,7 +10,7 @@ var fs = require("fs");
 //new csv convertor
 var csv = require('fast-csv');
 // file name
-var ws = fs.createWriteStream('my.csv');
+var ws = fs.createWriteStream('doctor.csv');
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
@@ -39,7 +39,7 @@ router.all("/", function (request, response) {
             doctor_name: received.name,
             doctor_spec: received.specialization,
             doctor_time: received.timings,
-            doctor_hospital: "Null"
+            doctor_hospital: received.hospital,
         };
 
         obj_id = obj.doctor_id;
@@ -48,11 +48,16 @@ router.all("/", function (request, response) {
         obj_tim = obj.doctor_time;
         obj_spec = obj.doctor_spec;
 
-        csv.write([
-            [obj_id, obj_hos, obj_name, obj_tim, obj_spec]
-        ], {
-            headers: true
-        }).pipe(ws);
+        try {
+            csv.write([
+                [obj_id, obj_hos, obj_name, obj_tim, obj_spec]
+            ], {
+                headers: true
+            }).pipe(ws);
+        } catch (err) {
+            console.log(err);
+            console.log("THIS IS FUCKING ASSHOLE..........");
+        }
 
         dbo.collection("doctorsdata").insertOne(obj, function (err, res) {
             if (err) throw err;
