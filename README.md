@@ -75,8 +75,6 @@
 <h3>Server will run on localhost:3000/ </h3>
 
 # Routes For reference
-# UFC-Backend
-
 <table>
   <tr>
     <th>Module Name</th>
