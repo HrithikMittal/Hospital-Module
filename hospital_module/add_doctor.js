@@ -7,10 +7,10 @@ var bodyParser = require("body-parser");
 var url = "mongodb://localhost:27017/";
 var fs = require("fs");
 
-// make the csv file
-var json2csv = require('json2csv').Parser;
-// fields in csv file
-
+//new csv convertor
+var csv = require('fast-csv');
+// file name
+var ws = fs.createWriteStream('my.csv');
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
@@ -42,26 +42,17 @@ router.all("/", function (request, response) {
             doctor_hospital: "Null"
         };
 
-        // console.log(obj);
-        // var csv = json2csvParser.parse(obj);
-        // console.log(csv);
+        obj_id = obj.doctor_id;
+        obj_hos = obj.doctor_hospital;
+        obj_name = obj.doctor_name;
+        obj_tim = obj.doctor_time;
+        obj_spec = obj.doctor_spec;
 
-        json2csv({
-            data: obj,
-            fields: ["doctor_id",
-                "doctor_name",
-                "doctor_spec",
-                "doctor_time",
-                "doctor_hospital"
-            ]
-        }, function (err, csv) {
-            if (err) console.log(err);
-            fs.writeFile('file.csv', csv, function (err) {
-                if (err) throw err;
-                console.log('file saved');
-            });
-        });
-
+        csv.write([
+            [obj_id, obj_hos, obj_name, obj_tim, obj_spec]
+        ], {
+            headers: true
+        }).pipe(ws);
 
         dbo.collection("doctorsdata").insertOne(obj, function (err, res) {
             if (err) throw err;
