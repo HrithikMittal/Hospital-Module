@@ -7,6 +7,12 @@ var bodyParser = require("body-parser");
 var url = "mongodb://localhost:27017/";
 var fs = require("fs");
 
+// for appending data
+var csvWriter = require('csv-write-stream')
+var writer = csvWriter()
+
+
+
 //new csv convertor
 var csv = require('fast-csv');
 // file name
@@ -48,16 +54,25 @@ router.all("/", function (request, response) {
         obj_tim = obj.doctor_time;
         obj_spec = obj.doctor_spec;
 
+        // try {
+        //     csv.write([
+        //         [obj_id, obj_hos, obj_name, obj_tim, obj_spec]
+        //     ], {
+        //         headers: true
+        //     }).pipe(ws);
+        // } catch (err) {
+        //     console.log(err);
+        //     console.log("THIS IS FUCKING ASSHOLE..........");
+        // }
+
         try {
-            csv.write([
-                [obj_id, obj_hos, obj_name, obj_tim, obj_spec]
-            ], {
-                headers: true
-            }).pipe(ws);
-        } catch (err) {
+            writer.pipe(fs.createWriteStream('out.csv'));
+            writer.write(obj);
+        } catch (error) {
             console.log(err);
             console.log("THIS IS FUCKING ASSHOLE..........");
         }
+
 
         dbo.collection("doctorsdata").insertOne(obj, function (err, res) {
             if (err) throw err;
