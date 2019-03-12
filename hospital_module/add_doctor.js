@@ -8,9 +8,8 @@ var url = "mongodb://localhost:27017/";
 var fs = require("fs");
 
 // make the csv file
-const Json2csvParser = require('json2csv').Parser;
+var json2csv = require('json2csv').Parser;
 // fields in csv file
-const fields = ['Doctor_Name', 'Doctor_Hospital', 'Doctor_timings', 'Doctor_id', 'Doctor_speciality'];
 
 
 app.set("view engine", "ejs");
@@ -34,23 +33,36 @@ router.all("/", function (request, response) {
     mongoClient.connect(url, function (err, db) {
         if (err) throw err;
         var dbo = db.db("devsoc");
-        //console.log(obj); 
-        // dbo.createCollection("hospitalsdata",function(err,res)
-        // {
-        //     if(err) throw err;
-        //     console.log(res);
-        // })
-        // dbo.collection("hospitalsdata").find({}).toArray(function(req,res)
-        // {
-        //     console.log(res);
-        // });
+
         var obj = {
             doctor_id: received.id,
             doctor_name: received.name,
             doctor_spec: received.specialization,
             doctor_time: received.timings,
-            doctor_hospital: received.hname
+            doctor_hospital: "Null"
         };
+
+        // console.log(obj);
+        // var csv = json2csvParser.parse(obj);
+        // console.log(csv);
+
+        json2csv({
+            data: obj,
+            fields: ["doctor_id",
+                "doctor_name",
+                "doctor_spec",
+                "doctor_time",
+                "doctor_hospital"
+            ]
+        }, function (err, csv) {
+            if (err) console.log(err);
+            fs.writeFile('file.csv', csv, function (err) {
+                if (err) throw err;
+                console.log('file saved');
+            });
+        });
+
+
         dbo.collection("doctorsdata").insertOne(obj, function (err, res) {
             if (err) throw err;
             // console.log(res);
