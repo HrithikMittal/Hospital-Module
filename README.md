@@ -1,4 +1,4 @@
-# Board-Selection
+# Work-Flow
 
 <table>
   <tr>
@@ -52,3 +52,24 @@
   
   
 </table>
+
+
+# Requirements?
+<h3>Download the following dependicies in terminal.</h3>
+
+```
+  npm install mongodb
+  npm install express
+  npm install body-parser
+  npm install fs
+  npm install csv-write-stream
+  npm install fast-csv
+```
+
+# How to run?
+<h3>Run this in your terminal.</h3>
+
+```
+  nodemon index.js
+```
+<h3>Server will run on localhost:3000/ </h3>
