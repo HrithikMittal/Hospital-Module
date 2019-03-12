@@ -7,19 +7,32 @@ var bodyParser = require("body-parser");
 var url = "mongodb://localhost:27017/";
 var fs = require("fs");
 
-app.set("view engine","ejs");
-app.use(express.static("public"));
-app.use(bodyParser.urlencoded({extended:true}));
+// make the csv file
+const Json2csvParser = require('json2csv').Parser;
+// fields in csv file
+const fields = ['Doctor_Name', 'Doctor_Hospital', 'Doctor_timings', 'Doctor_id', 'Doctor_speciality'];
 
-router.all("/",function(request,response)
-{
+
+app.set("view engine", "ejs");
+app.use(express.static("public"));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+
+router.all("/", function (request, response) {
     var received = request.body;
     console.log(received);
-    var obj= {hospital_name:received.hname,h_address:received.address,h_phone:received.pno,h_id:received.id,password:received.pwd};
+    var obj = {
+        hospital_name: received.hname,
+        h_address: received.address,
+        h_phone: received.pno,
+        h_id: received.id,
+        password: received.pwd
+    };
+    console.log(obj.hospital_name);
     //console.log(obj);
-    mongoClient.connect(url,function(err,db)
-    {
-        if(err) throw err;
+    mongoClient.connect(url, function (err, db) {
+        if (err) throw err;
         var dbo = db.db("devsoc");
         //console.log(obj); 
         // dbo.createCollection("hospitalsdata",function(err,res)
@@ -31,17 +44,23 @@ router.all("/",function(request,response)
         // {
         //     console.log(res);
         // });
-        var obj = {doctor_id:received.id,doctor_name:received.name};
-        dbo.collection("doctorsdata").insertOne(obj,function(err,res)
-        {
-            if(err) throw err;
-           // console.log(res);
-            dbo.collection("doctorsdata").find({}).toArray(function(err,res)
-            {
-                if(err) throw err;
-                var obj =res;
-               // console.log(obj);
-                response.render("hospital_add_remove.ejs",{data:obj});
+        var obj = {
+            doctor_id: received.id,
+            doctor_name: received.name,
+            doctor_spec: received.specialization,
+            doctor_time: received.timings,
+            doctor_hospital: received.hname
+        };
+        dbo.collection("doctorsdata").insertOne(obj, function (err, res) {
+            if (err) throw err;
+            // console.log(res);
+            dbo.collection("doctorsdata").find({}).toArray(function (err, res) {
+                if (err) throw err;
+                var obj = res;
+                // console.log(obj);
+                response.render("hospital_add_remove.ejs", {
+                    data: obj
+                });
             });
         });
     });
