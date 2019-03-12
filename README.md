@@ -73,3 +73,73 @@
   nodemon index.js
 ```
 <h3>Server will run on localhost:3000/ </h3>
+
+# Routes For reference
+# UFC-Backend
+
+<table>
+  <tr>
+    <th>Module Name</th>
+    <th>Database Name</th>
+    <th>Collection Name</th>
+    <th>Route</th>
+    <th>Post</th>
+    <th>Get</th>
+    <th>Description</th>
+  </tr>
+ 
+ 
+  <tr>
+  <td>Hospital</td>
+    <td> No </td>
+    <td> No </td>
+    <td> http://localhost:3000/ or http://localhost:3000/reg</td>
+    <td>No</td>
+    <td>No</td>
+    <td>This is Main Page </td>
+  </tr>
+ 
+  <tr>
+  <td>Hospital</td>
+    <td> devsoc </td>
+    <td> hospitaldata </td>
+    <td> http://localhost:3000/hospitalsreg </td>
+    <td>Yes</td>
+    <td>No</td>
+    <td>Signup For hospital</td>
+  </tr>
+ 
+ 
+  <tr>
+  <td>Hospital</td>
+    <td> devsoc </td>
+    <td> hospitaldata </td>
+    <td> http://localhost:3000/hospitallogin </td>
+    <td>No</td>
+    <td>Yes</td>
+    <td>Login For hospital</td>
+  </tr>
+ 
+  <tr>
+  <td>Hospital</td>
+    <td> devsoc </td>
+    <td> doctorsdata </td>
+    <td> http://localhost:3000/add_doctor </td>
+    <td>Yes</td>
+    <td>No</td>
+    <td>Add Doctor</td>
+  </tr>
+ 
+  <tr>
+  <td>Hospital</td>
+    <td> devsoc </td>
+    <td> doctorsdata </td>
+    <td> http://localhost:3000/add_remove </td>
+    <td>Yes</td>
+    <td>Yes</td>
+    <td>Remove Doctor</td>
+  </tr>
+ 
+ 
+  </table>
+
