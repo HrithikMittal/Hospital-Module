@@ -14,7 +14,7 @@
     "csv-write-stream": "^2.0.0",
     "csv-writer": "^1.2.0",
     "ejs": "^2.6.1",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "fast-csv": "^2.4.1",
     "fs": "0.0.1-security",
     "json2csv": "^4.3.5",
